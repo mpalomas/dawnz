@@ -3,6 +3,7 @@
 //! is to delete this file and start with root.zig instead.
 
 pub fn main() !void {
+    _ = dawn.createInstance();
     // Prints to stderr (it's a shortcut based on `std.io.getStdErr()`)
     std.debug.print("All your {s} are belong to us.\n", .{"codebase"});
 
@@ -43,3 +44,5 @@ const std = @import("std");
 
 /// This imports the separate module containing `root.zig`. Take a look in `build.zig` for details.
 const lib = @import("dawnz_lib");
+
+const dawn = lib.dawn;
