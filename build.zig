@@ -31,7 +31,26 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
-    lib_mod.addObjectFile(.{ .cwd_relative = "dawn/linux-x86_64/libdawn.so" });
+
+    const dawn_path = switch (target.result.os.tag) {
+        .linux => "dawn/linux-x86_64/libdawn.so",
+        .macos => "dawn/macos-aarch64/libdawn.dylib",
+        else => unreachable,
+    };
+
+    const dawn_lib_path = switch (target.result.os.tag) {
+        .linux => "dawn/linux-x86_64",
+        .macos => "dawn/macos-aarch64",
+        else => unreachable,
+    };
+
+    const dawn_lib_name = switch (target.result.os.tag) {
+        .linux => "libdawn.so",
+        .macos => "libdawn.dylib",
+        else => unreachable,
+    };
+
+    // lib_mod.addObjectFile(.{ .cwd_relative = "dawn/linux-x86_64/libdawn.so" });
 
     // We will also create a module for our other entry point, 'main.zig'.
     const exe_mod = b.createModule(.{
@@ -53,7 +72,7 @@ pub fn build(b: *std.Build) void {
     // This creates a `std.Build.Step.Compile`, which is the build step responsible
     // for actually invoking the compiler.
     const lib = b.addLibrary(.{
-        .linkage = .dynamic,
+        .linkage = .static,
         .name = "dawnz",
         .root_module = lib_mod,
     });
@@ -61,13 +80,14 @@ pub fn build(b: *std.Build) void {
     lib.linkLibC();
     lib.installHeadersDirectory(b.path("dawn/include/dawn"), "dawn", .{});
     // TODO choose one or the other...
-    lib.addObjectFile(b.path("dawn/linux-x86_64/libdawn.so"));
-    lib.addLibraryPath(b.path("dawn/linux-x86_64"));
+    lib.addObjectFile(b.path(dawn_path));
+    lib.addLibraryPath(b.path(dawn_lib_path));
     // lib.linkSystemLibrary("dawn");
 
     // This declares intent for the library to be installed into the standard
     // location when the user invokes the "install" step (the default step when
     // running `zig build`).
+    b.installBinFile(dawn_path, dawn_lib_name);
     b.installArtifact(lib);
 
     // This creates another `std.Build.Step.Compile`, but this one builds an executable
