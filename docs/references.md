@@ -8,3 +8,5 @@
 [Zig prebuilt static lib](https://ziggit.dev/t/troubleshooting-for-linking-with-pre-built-static-libraries/5826)
 
 [Zig hot reloading](https://zig.news/perky/hot-reloading-with-raylib-4bf9)
+
+[UPX shared lib](https://github.com/upx/upx/issues/2)
