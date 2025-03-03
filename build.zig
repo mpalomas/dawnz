@@ -35,18 +35,21 @@ pub fn build(b: *std.Build) void {
     const dawn_path = switch (target.result.os.tag) {
         .linux => "dawn/linux-x86_64/libdawn.so",
         .macos => "dawn/macos-aarch64/libdawn.dylib",
+        .windows => "dawn/windows-x86_64/dawn.dll",
         else => unreachable,
     };
 
     const dawn_lib_path = switch (target.result.os.tag) {
         .linux => "dawn/linux-x86_64",
         .macos => "dawn/macos-aarch64",
+        .windows => "dawn/windows-x86_64",
         else => unreachable,
     };
 
     const dawn_lib_name = switch (target.result.os.tag) {
         .linux => "libdawn.so",
         .macos => "libdawn.dylib",
+        .windows => "dawn.dll",
         else => unreachable,
     };
 
