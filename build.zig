@@ -9,6 +9,7 @@ pub fn build(b: *std.Build) void {
     // means any target is allowed, and the default is native. Other options
     // for restricting supported target set are available.
     const target = b.standardTargetOptions(.{});
+    const target_os_tag = target.result.os.tag;
 
     // Standard optimization options allow the person running `zig build` to select
     // between Debug, ReleaseSafe, ReleaseFast, and ReleaseSmall. Here we do not
@@ -32,21 +33,21 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
-    const dawn_path = switch (target.result.os.tag) {
+    const dawn_path = switch (target_os_tag) {
         .linux => "dawn/linux-x86_64/libdawn.so",
         .macos => "dawn/macos-aarch64/libdawn.dylib",
         .windows => "dawn/windows-x86_64/dawn.dll",
         else => unreachable,
     };
 
-    const dawn_lib_path = switch (target.result.os.tag) {
+    const dawn_lib_path = switch (target_os_tag) {
         .linux => "dawn/linux-x86_64",
         .macos => "dawn/macos-aarch64",
         .windows => "dawn/windows-x86_64",
         else => unreachable,
     };
 
-    const dawn_lib_name = switch (target.result.os.tag) {
+    const dawn_lib_name = switch (target_os_tag) {
         .linux => "libdawn.so",
         .macos => "libdawn.dylib",
         .windows => "dawn.dll",

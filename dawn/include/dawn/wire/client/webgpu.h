@@ -10,6 +10,7 @@ extern "C" {
 
 DAWN_WIRE_EXPORT void wgpuDawnWireClientAdapterInfoFreeMembers(WGPUAdapterInfo value) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT void wgpuDawnWireClientAdapterPropertiesMemoryHeapsFreeMembers(WGPUAdapterPropertiesMemoryHeaps value) WGPU_FUNCTION_ATTRIBUTE;
+DAWN_WIRE_EXPORT void wgpuDawnWireClientAdapterPropertiesSubgroupMatrixConfigsFreeMembers(WGPUAdapterPropertiesSubgroupMatrixConfigs value) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT WGPUInstance wgpuDawnWireClientCreateInstance(WGPU_NULLABLE WGPUInstanceDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT void wgpuDawnWireClientDawnDrmFormatCapabilitiesFreeMembers(WGPUDawnDrmFormatCapabilities value) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT WGPUStatus wgpuDawnWireClientGetInstanceCapabilities(WGPUInstanceCapabilities * capabilities) WGPU_FUNCTION_ATTRIBUTE;
@@ -26,7 +27,7 @@ DAWN_WIRE_EXPORT void wgpuDawnWireClientAdapterGetFeatures(WGPUAdapter adapter, 
 DAWN_WIRE_EXPORT WGPUStatus wgpuDawnWireClientAdapterGetFormatCapabilities(WGPUAdapter adapter, WGPUTextureFormat format, WGPUDawnFormatCapabilities * capabilities) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT WGPUStatus wgpuDawnWireClientAdapterGetInfo(WGPUAdapter adapter, WGPUAdapterInfo * info) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT WGPUInstance wgpuDawnWireClientAdapterGetInstance(WGPUAdapter adapter) WGPU_FUNCTION_ATTRIBUTE;
-DAWN_WIRE_EXPORT WGPUStatus wgpuDawnWireClientAdapterGetLimits(WGPUAdapter adapter, WGPUSupportedLimits * limits) WGPU_FUNCTION_ATTRIBUTE;
+DAWN_WIRE_EXPORT WGPUStatus wgpuDawnWireClientAdapterGetLimits(WGPUAdapter adapter, WGPULimits * limits) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT WGPUBool wgpuDawnWireClientAdapterHasFeature(WGPUAdapter adapter, WGPUFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT WGPUFuture wgpuDawnWireClientAdapterRequestDevice(WGPUAdapter adapter, WGPU_NULLABLE WGPUDeviceDescriptor const * options, WGPURequestDeviceCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT void wgpuDawnWireClientAdapterAddRef(WGPUAdapter adapter) WGPU_FUNCTION_ATTRIBUTE;
@@ -50,8 +51,10 @@ DAWN_WIRE_EXPORT void * wgpuDawnWireClientBufferGetMappedRange(WGPUBuffer buffer
 DAWN_WIRE_EXPORT uint64_t wgpuDawnWireClientBufferGetSize(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT WGPUBufferUsage wgpuDawnWireClientBufferGetUsage(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT WGPUFuture wgpuDawnWireClientBufferMapAsync(WGPUBuffer buffer, WGPUMapMode mode, size_t offset, size_t size, WGPUBufferMapCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
+DAWN_WIRE_EXPORT WGPUStatus wgpuDawnWireClientBufferReadMappedRange(WGPUBuffer buffer, size_t offset, void * data, size_t size) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT void wgpuDawnWireClientBufferSetLabel(WGPUBuffer buffer, WGPUStringView label) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT void wgpuDawnWireClientBufferUnmap(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
+DAWN_WIRE_EXPORT WGPUStatus wgpuDawnWireClientBufferWriteMappedRange(WGPUBuffer buffer, size_t offset, void const * data, size_t size) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT void wgpuDawnWireClientBufferAddRef(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT void wgpuDawnWireClientBufferRelease(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
 
@@ -65,9 +68,9 @@ DAWN_WIRE_EXPORT WGPUComputePassEncoder wgpuDawnWireClientCommandEncoderBeginCom
 DAWN_WIRE_EXPORT WGPURenderPassEncoder wgpuDawnWireClientCommandEncoderBeginRenderPass(WGPUCommandEncoder commandEncoder, WGPURenderPassDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT void wgpuDawnWireClientCommandEncoderClearBuffer(WGPUCommandEncoder commandEncoder, WGPUBuffer buffer, uint64_t offset, uint64_t size) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT void wgpuDawnWireClientCommandEncoderCopyBufferToBuffer(WGPUCommandEncoder commandEncoder, WGPUBuffer source, uint64_t sourceOffset, WGPUBuffer destination, uint64_t destinationOffset, uint64_t size) WGPU_FUNCTION_ATTRIBUTE;
-DAWN_WIRE_EXPORT void wgpuDawnWireClientCommandEncoderCopyBufferToTexture(WGPUCommandEncoder commandEncoder, WGPUImageCopyBuffer const * source, WGPUImageCopyTexture const * destination, WGPUExtent3D const * copySize) WGPU_FUNCTION_ATTRIBUTE;
-DAWN_WIRE_EXPORT void wgpuDawnWireClientCommandEncoderCopyTextureToBuffer(WGPUCommandEncoder commandEncoder, WGPUImageCopyTexture const * source, WGPUImageCopyBuffer const * destination, WGPUExtent3D const * copySize) WGPU_FUNCTION_ATTRIBUTE;
-DAWN_WIRE_EXPORT void wgpuDawnWireClientCommandEncoderCopyTextureToTexture(WGPUCommandEncoder commandEncoder, WGPUImageCopyTexture const * source, WGPUImageCopyTexture const * destination, WGPUExtent3D const * copySize) WGPU_FUNCTION_ATTRIBUTE;
+DAWN_WIRE_EXPORT void wgpuDawnWireClientCommandEncoderCopyBufferToTexture(WGPUCommandEncoder commandEncoder, WGPUTexelCopyBufferInfo const * source, WGPUTexelCopyTextureInfo const * destination, WGPUExtent3D const * copySize) WGPU_FUNCTION_ATTRIBUTE;
+DAWN_WIRE_EXPORT void wgpuDawnWireClientCommandEncoderCopyTextureToBuffer(WGPUCommandEncoder commandEncoder, WGPUTexelCopyTextureInfo const * source, WGPUTexelCopyBufferInfo const * destination, WGPUExtent3D const * copySize) WGPU_FUNCTION_ATTRIBUTE;
+DAWN_WIRE_EXPORT void wgpuDawnWireClientCommandEncoderCopyTextureToTexture(WGPUCommandEncoder commandEncoder, WGPUTexelCopyTextureInfo const * source, WGPUTexelCopyTextureInfo const * destination, WGPUExtent3D const * copySize) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT WGPUCommandBuffer wgpuDawnWireClientCommandEncoderFinish(WGPUCommandEncoder commandEncoder, WGPU_NULLABLE WGPUCommandBufferDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT void wgpuDawnWireClientCommandEncoderInjectValidationError(WGPUCommandEncoder commandEncoder, WGPUStringView message) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT void wgpuDawnWireClientCommandEncoderInsertDebugMarker(WGPUCommandEncoder commandEncoder, WGPUStringView markerLabel) WGPU_FUNCTION_ATTRIBUTE;
@@ -88,6 +91,7 @@ DAWN_WIRE_EXPORT void wgpuDawnWireClientComputePassEncoderInsertDebugMarker(WGPU
 DAWN_WIRE_EXPORT void wgpuDawnWireClientComputePassEncoderPopDebugGroup(WGPUComputePassEncoder computePassEncoder) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT void wgpuDawnWireClientComputePassEncoderPushDebugGroup(WGPUComputePassEncoder computePassEncoder, WGPUStringView groupLabel) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT void wgpuDawnWireClientComputePassEncoderSetBindGroup(WGPUComputePassEncoder computePassEncoder, uint32_t groupIndex, WGPU_NULLABLE WGPUBindGroup group, size_t dynamicOffsetCount, uint32_t const * dynamicOffsets) WGPU_FUNCTION_ATTRIBUTE;
+DAWN_WIRE_EXPORT void wgpuDawnWireClientComputePassEncoderSetImmediateData(WGPUComputePassEncoder computePassEncoder, uint32_t offset, void const * data, size_t size) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT void wgpuDawnWireClientComputePassEncoderSetLabel(WGPUComputePassEncoder computePassEncoder, WGPUStringView label) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT void wgpuDawnWireClientComputePassEncoderSetPipeline(WGPUComputePassEncoder computePassEncoder, WGPUComputePipeline pipeline) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT void wgpuDawnWireClientComputePassEncoderWriteTimestamp(WGPUComputePassEncoder computePassEncoder, WGPUQuerySet querySet, uint32_t queryIndex) WGPU_FUNCTION_ATTRIBUTE;
@@ -126,7 +130,7 @@ DAWN_WIRE_EXPORT WGPUStatus wgpuDawnWireClientDeviceGetAHardwareBufferProperties
 DAWN_WIRE_EXPORT WGPUAdapter wgpuDawnWireClientDeviceGetAdapter(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT WGPUStatus wgpuDawnWireClientDeviceGetAdapterInfo(WGPUDevice device, WGPUAdapterInfo * adapterInfo) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT void wgpuDawnWireClientDeviceGetFeatures(WGPUDevice device, WGPUSupportedFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
-DAWN_WIRE_EXPORT WGPUStatus wgpuDawnWireClientDeviceGetLimits(WGPUDevice device, WGPUSupportedLimits * limits) WGPU_FUNCTION_ATTRIBUTE;
+DAWN_WIRE_EXPORT WGPUStatus wgpuDawnWireClientDeviceGetLimits(WGPUDevice device, WGPULimits * limits) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT WGPUFuture wgpuDawnWireClientDeviceGetLostFuture(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT WGPUQueue wgpuDawnWireClientDeviceGetQueue(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT WGPUBool wgpuDawnWireClientDeviceHasFeature(WGPUDevice device, WGPUFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
@@ -175,13 +179,13 @@ DAWN_WIRE_EXPORT void wgpuDawnWireClientQuerySetAddRef(WGPUQuerySet querySet) WG
 DAWN_WIRE_EXPORT void wgpuDawnWireClientQuerySetRelease(WGPUQuerySet querySet) WGPU_FUNCTION_ATTRIBUTE;
 
 // Methods of Queue
-DAWN_WIRE_EXPORT void wgpuDawnWireClientQueueCopyExternalTextureForBrowser(WGPUQueue queue, WGPUImageCopyExternalTexture const * source, WGPUImageCopyTexture const * destination, WGPUExtent3D const * copySize, WGPUCopyTextureForBrowserOptions const * options) WGPU_FUNCTION_ATTRIBUTE;
-DAWN_WIRE_EXPORT void wgpuDawnWireClientQueueCopyTextureForBrowser(WGPUQueue queue, WGPUImageCopyTexture const * source, WGPUImageCopyTexture const * destination, WGPUExtent3D const * copySize, WGPUCopyTextureForBrowserOptions const * options) WGPU_FUNCTION_ATTRIBUTE;
+DAWN_WIRE_EXPORT void wgpuDawnWireClientQueueCopyExternalTextureForBrowser(WGPUQueue queue, WGPUImageCopyExternalTexture const * source, WGPUTexelCopyTextureInfo const * destination, WGPUExtent3D const * copySize, WGPUCopyTextureForBrowserOptions const * options) WGPU_FUNCTION_ATTRIBUTE;
+DAWN_WIRE_EXPORT void wgpuDawnWireClientQueueCopyTextureForBrowser(WGPUQueue queue, WGPUTexelCopyTextureInfo const * source, WGPUTexelCopyTextureInfo const * destination, WGPUExtent3D const * copySize, WGPUCopyTextureForBrowserOptions const * options) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT WGPUFuture wgpuDawnWireClientQueueOnSubmittedWorkDone(WGPUQueue queue, WGPUQueueWorkDoneCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT void wgpuDawnWireClientQueueSetLabel(WGPUQueue queue, WGPUStringView label) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT void wgpuDawnWireClientQueueSubmit(WGPUQueue queue, size_t commandCount, WGPUCommandBuffer const * commands) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT void wgpuDawnWireClientQueueWriteBuffer(WGPUQueue queue, WGPUBuffer buffer, uint64_t bufferOffset, void const * data, size_t size) WGPU_FUNCTION_ATTRIBUTE;
-DAWN_WIRE_EXPORT void wgpuDawnWireClientQueueWriteTexture(WGPUQueue queue, WGPUImageCopyTexture const * destination, void const * data, size_t dataSize, WGPUTextureDataLayout const * dataLayout, WGPUExtent3D const * writeSize) WGPU_FUNCTION_ATTRIBUTE;
+DAWN_WIRE_EXPORT void wgpuDawnWireClientQueueWriteTexture(WGPUQueue queue, WGPUTexelCopyTextureInfo const * destination, void const * data, size_t dataSize, WGPUTexelCopyBufferLayout const * dataLayout, WGPUExtent3D const * writeSize) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT void wgpuDawnWireClientQueueAddRef(WGPUQueue queue) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT void wgpuDawnWireClientQueueRelease(WGPUQueue queue) WGPU_FUNCTION_ATTRIBUTE;
 
@@ -200,6 +204,7 @@ DAWN_WIRE_EXPORT void wgpuDawnWireClientRenderBundleEncoderInsertDebugMarker(WGP
 DAWN_WIRE_EXPORT void wgpuDawnWireClientRenderBundleEncoderPopDebugGroup(WGPURenderBundleEncoder renderBundleEncoder) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT void wgpuDawnWireClientRenderBundleEncoderPushDebugGroup(WGPURenderBundleEncoder renderBundleEncoder, WGPUStringView groupLabel) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT void wgpuDawnWireClientRenderBundleEncoderSetBindGroup(WGPURenderBundleEncoder renderBundleEncoder, uint32_t groupIndex, WGPU_NULLABLE WGPUBindGroup group, size_t dynamicOffsetCount, uint32_t const * dynamicOffsets) WGPU_FUNCTION_ATTRIBUTE;
+DAWN_WIRE_EXPORT void wgpuDawnWireClientRenderBundleEncoderSetImmediateData(WGPURenderBundleEncoder renderBundleEncoder, uint32_t offset, void const * data, size_t size) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT void wgpuDawnWireClientRenderBundleEncoderSetIndexBuffer(WGPURenderBundleEncoder renderBundleEncoder, WGPUBuffer buffer, WGPUIndexFormat format, uint64_t offset, uint64_t size) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT void wgpuDawnWireClientRenderBundleEncoderSetLabel(WGPURenderBundleEncoder renderBundleEncoder, WGPUStringView label) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT void wgpuDawnWireClientRenderBundleEncoderSetPipeline(WGPURenderBundleEncoder renderBundleEncoder, WGPURenderPipeline pipeline) WGPU_FUNCTION_ATTRIBUTE;
@@ -224,6 +229,7 @@ DAWN_WIRE_EXPORT void wgpuDawnWireClientRenderPassEncoderPopDebugGroup(WGPURende
 DAWN_WIRE_EXPORT void wgpuDawnWireClientRenderPassEncoderPushDebugGroup(WGPURenderPassEncoder renderPassEncoder, WGPUStringView groupLabel) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT void wgpuDawnWireClientRenderPassEncoderSetBindGroup(WGPURenderPassEncoder renderPassEncoder, uint32_t groupIndex, WGPU_NULLABLE WGPUBindGroup group, size_t dynamicOffsetCount, uint32_t const * dynamicOffsets) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT void wgpuDawnWireClientRenderPassEncoderSetBlendConstant(WGPURenderPassEncoder renderPassEncoder, WGPUColor const * color) WGPU_FUNCTION_ATTRIBUTE;
+DAWN_WIRE_EXPORT void wgpuDawnWireClientRenderPassEncoderSetImmediateData(WGPURenderPassEncoder renderPassEncoder, uint32_t offset, void const * data, size_t size) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT void wgpuDawnWireClientRenderPassEncoderSetIndexBuffer(WGPURenderPassEncoder renderPassEncoder, WGPUBuffer buffer, WGPUIndexFormat format, uint64_t offset, uint64_t size) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT void wgpuDawnWireClientRenderPassEncoderSetLabel(WGPURenderPassEncoder renderPassEncoder, WGPUStringView label) WGPU_FUNCTION_ATTRIBUTE;
 DAWN_WIRE_EXPORT void wgpuDawnWireClientRenderPassEncoderSetPipeline(WGPURenderPassEncoder renderPassEncoder, WGPURenderPipeline pipeline) WGPU_FUNCTION_ATTRIBUTE;

@@ -9,7 +9,7 @@ pub fn init() !void {
     return;
 }
 
-var wgpuInstance: cdawn.WGPUInstance = undefined;
+var wgpuInstance: cdawn.WGPUInstance = null;
 pub fn createInstance() void {
     wgpuInstance = cdawn.wgpuCreateInstance(null);
     std.debug.assert(wgpuInstance != null);
