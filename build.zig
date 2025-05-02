@@ -84,9 +84,9 @@ pub fn build(b: *std.Build) void {
     lib.linkLibC();
     lib.installHeadersDirectory(b.path("dawn/include/dawn"), "dawn", .{});
     // TODO choose one or the other...
-    lib.addObjectFile(b.path(dawn_path));
+    // lib.addObjectFile(b.path(dawn_path));
     lib.addLibraryPath(b.path(dawn_lib_path));
-    // lib.linkSystemLibrary("dawn");
+    lib.linkSystemLibrary("dawn");
 
     // This declares intent for the library to be installed into the standard
     // location when the user invokes the "install" step (the default step when
