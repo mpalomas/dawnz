@@ -45,13 +45,7 @@ pub fn build(b: *std.Build) void {
     dawn_lib.linkSystemLibrary("dawn");
 
     b.installBinFile(dawn_path, dawn_lib_name);
-    // b.installArtifact(lib);
-
-    const install_dawn_lib = b.addInstallArtifact(dawn_lib, .{});
-    const install_dawn = b.step("install_dawn", "Install Dawn");
-    install_dawn.dependOn(&install_dawn_lib.step);
-
-    b.getInstallStep().dependOn(&install_dawn_lib.step);
+    b.installArtifact(dawn_lib);
 
     // Creates a step for unit testing. This only builds the test executable
     // but does not run it.
