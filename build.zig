@@ -16,10 +16,6 @@ pub fn build(b: *std.Build) void {
     // set a preferred release mode, allowing the user to decide how to optimize.
     const optimize = b.standardOptimizeOption(.{});
 
-    // const dawn_lib = std.Build.addLibrary(b, .{ .name = "toto" });
-    // const dawn_mod = dawn_lib.root_module;
-    // _ = dawn_mod;
-
     // This creates a "module", which represents a collection of source files alongside
     // some compilation options, such as optimization mode and linked system libraries.
     // Every executable or library we compile will be based on one or more modules.
@@ -54,8 +50,6 @@ pub fn build(b: *std.Build) void {
         else => unreachable,
     };
 
-    // lib_mod.addObjectFile(.{ .cwd_relative = "dawn/linux-x86_64/libdawn.so" });
-
     // We will also create a module for our other entry point, 'main.zig'.
     const exe_mod = b.createModule(.{
         // `root_source_file` is the Zig "entry point" of the module. If a module
@@ -83,8 +77,6 @@ pub fn build(b: *std.Build) void {
     lib.addIncludePath(b.path("dawn/include"));
     lib.linkLibC();
     lib.installHeadersDirectory(b.path("dawn/include/dawn"), "dawn", .{});
-    // TODO choose one or the other...
-    // lib.addObjectFile(b.path(dawn_path));
     lib.addLibraryPath(b.path(dawn_lib_path));
     lib.linkSystemLibrary("dawn");
 
