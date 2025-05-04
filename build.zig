@@ -18,6 +18,10 @@ pub fn build(b: *std.Build) !void {
         .optimize = optimize,
     });
 
+    if (shared) {
+        dawn_mod.addCMacro("WGPU_SHARED_LIBRARY", "1");
+    }
+
     var dawn_shared_name: [:0]const u8 = undefined;
     var dawn_static_name: [:0]const u8 = undefined;
     var dawn_lib_base_path: [:0]const u8 = undefined;

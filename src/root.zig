@@ -4,13 +4,11 @@
 const std = @import("std");
 const testing = std.testing;
 
-pub const dawn = @import("dawn.zig");
+pub const cdawn = @cImport({
+    @cInclude("dawn/webgpu.h");
+});
 
-pub export fn add(a: i32, b: i32) i32 {
-    return a + b;
-}
-
-test "basic add functionality" {
-    try dawn.createInstance();
-    try testing.expect(true);
+test "dawn instance creation" {
+    const wgpuInstance: cdawn.WGPUInstance = cdawn.wgpuCreateInstance(null);
+    try testing.expect(wgpuInstance != null);
 }
