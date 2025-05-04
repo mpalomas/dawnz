@@ -8,6 +8,10 @@ pub fn build(b: *std.Build) !void {
 
     const shared = b.option(bool, "shared", "Build and consume Google Dawn as a shared library") orelse true;
 
+    if (shared == false) {
+        return error.StaticBuildNotYetSupported;
+    }
+
     const dawn_mod = b.createModule(.{
         .root_source_file = b.path("src/root.zig"),
         .target = target,
@@ -51,14 +55,13 @@ pub fn build(b: *std.Build) !void {
     dawn_lib.addIncludePath(b.path("dawn/include"));
     dawn_lib.linkLibC();
     dawn_lib.installHeadersDirectory(b.path("dawn/include/dawn"), "dawn", .{});
-    dawn_lib.addLibraryPath(b.path(dawn_lib_path));
-    dawn_lib.linkSystemLibrary("dawn");
 
-    // b.installBinFile(dawn_path, dawn_lib_name);
     if (shared) {
+        dawn_lib.addLibraryPath(b.path(dawn_lib_path));
+        dawn_lib.linkSystemLibrary("dawn");
         b.addNamedLazyPath("dawn_shared_library", b.path(dawn_path));
-    }
-
+    } else {}
+    // b.installBinFile(dawn_path, dawn_lib_name);
     b.installArtifact(dawn_lib);
 
     // Creates a step for unit testing. This only builds the test executable
