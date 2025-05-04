@@ -33,6 +33,17 @@ pub fn build(b: *std.Build) void {
         else => unreachable,
     };
 
+    _ = dawn_lib_name;
+
+    const dawn_static_name = switch (target_os_tag) {
+        .linux => "libdawn.a",
+        .macos => "libdawn.a",
+        .windows => "dawn.lib",
+        else => unreachable,
+    };
+
+    _ = dawn_static_name;
+
     const dawn_lib = b.addLibrary(.{
         .linkage = .static,
         .name = "dawnz",
@@ -44,7 +55,7 @@ pub fn build(b: *std.Build) void {
     dawn_lib.addLibraryPath(b.path(dawn_lib_path));
     dawn_lib.linkSystemLibrary("dawn");
 
-    b.installBinFile(dawn_path, dawn_lib_name);
+    // b.installBinFile(dawn_path, dawn_lib_name);
     b.addNamedLazyPath("dawn_shared_library", b.path(dawn_path));
     b.installArtifact(dawn_lib);
 

@@ -10,8 +10,9 @@ pub fn init() !void {
 }
 
 var wgpuInstance: cdawn.WGPUInstance = null;
-pub fn createInstance() void {
+pub fn createInstance() !void {
     wgpuInstance = cdawn.wgpuCreateInstance(null);
-    std.debug.assert(wgpuInstance != null);
-    std.debug.print("wgpuCreateInstance called and returned an instance\n", .{});
+    if (wgpuInstance == null) {
+        return error.GpuInstanceCreationFailed;
+    }
 }
