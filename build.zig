@@ -1,10 +1,12 @@
 const std = @import("std");
 
-pub fn build(b: *std.Build) void {
+pub fn build(b: *std.Build) !void {
     const target = b.standardTargetOptions(.{});
     const target_os_tag = target.result.os.tag;
 
     const optimize = b.standardOptimizeOption(.{});
+
+    const shared = b.option(bool, "shared", "Build and consume Google Dawn as a shared library") orelse true;
 
     const dawn_mod = b.createModule(.{
         .root_source_file = b.path("src/root.zig"),
@@ -12,37 +14,34 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
-    const dawn_path = switch (target_os_tag) {
-        .linux => "dawn/linux-x86_64/libdawn.so",
-        .macos => "dawn/macos-aarch64/libdawn.dylib",
-        .windows => "dawn/windows-x86_64/dawn.dll",
-        else => unreachable,
-    };
+    var dawn_shared_name: [:0]const u8 = undefined;
+    var dawn_static_name: [:0]const u8 = undefined;
+    var dawn_lib_base_path: [:0]const u8 = undefined;
 
-    const dawn_lib_path = switch (target_os_tag) {
-        .linux => "dawn/linux-x86_64",
-        .macos => "dawn/macos-aarch64",
-        .windows => "dawn/windows-x86_64",
-        else => unreachable,
-    };
+    switch (target_os_tag) {
+        .linux => {
+            dawn_shared_name = "libdawn.so";
+            dawn_static_name = "libdawn.a";
+            dawn_lib_base_path = "dawn/linux-x86_64";
+        },
+        .macos => {
+            dawn_shared_name = "libdawn.dylib";
+            dawn_static_name = "libdawn.a";
+            dawn_lib_base_path = "dawn/macos-aarch64";
+        },
+        .windows => {
+            dawn_shared_name = "dawn.dll";
+            dawn_static_name = "dawn.lib";
+            dawn_lib_base_path = "dawn/windows-x86_64";
+        },
+        else => undefined,
+    }
 
-    const dawn_lib_name = switch (target_os_tag) {
-        .linux => "libdawn.so",
-        .macos => "libdawn.dylib",
-        .windows => "dawn.dll",
-        else => unreachable,
-    };
+    var lib_path_buffer: [256]u8 = undefined;
+    const dawn_lib_path = try std.fmt.bufPrint(&lib_path_buffer, "{s}/{s}", .{ dawn_lib_base_path, if (shared) "shared" else "static" });
 
-    _ = dawn_lib_name;
-
-    const dawn_static_name = switch (target_os_tag) {
-        .linux => "libdawn.a",
-        .macos => "libdawn.a",
-        .windows => "dawn.lib",
-        else => unreachable,
-    };
-
-    _ = dawn_static_name;
+    var path_buffer: [256]u8 = undefined;
+    const dawn_path = try std.fmt.bufPrint(&path_buffer, "{s}/{s}", .{ dawn_lib_path, if (shared) dawn_shared_name else dawn_static_name });
 
     const dawn_lib = b.addLibrary(.{
         .linkage = .static,
@@ -56,7 +55,10 @@ pub fn build(b: *std.Build) void {
     dawn_lib.linkSystemLibrary("dawn");
 
     // b.installBinFile(dawn_path, dawn_lib_name);
-    b.addNamedLazyPath("dawn_shared_library", b.path(dawn_path));
+    if (shared) {
+        b.addNamedLazyPath("dawn_shared_library", b.path(dawn_path));
+    }
+
     b.installArtifact(dawn_lib);
 
     // Creates a step for unit testing. This only builds the test executable

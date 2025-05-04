@@ -1,7 +1,7 @@
 const std = @import("std");
 
 const cdawn = @cImport({
-    @cDefine("WGPU_SHARED_LIBRARY", {});
+    // @cDefine("WGPU_SHARED_LIBRARY", {});
     @cInclude("dawn/webgpu.h");
 });
 
