@@ -38,7 +38,9 @@ pub fn build(b: *std.Build) !void {
             dawn_static_name = "dawn.lib";
             dawn_lib_base_path = "dawn/windows-x86_64";
         },
-        else => undefined,
+        else => {
+            return error.OsNotSupported;
+        },
     }
 
     var lib_path_buffer: [256]u8 = undefined;
