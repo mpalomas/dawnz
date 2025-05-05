@@ -1,7 +1,7 @@
 .{
     .name = .dawnz,
 
-    .version = "0.1.0",
+    .version = "0.1.1",
 
     .fingerprint = 0x331a16284d064be9,
 
@@ -13,6 +13,7 @@
         "build.zig",
         "build.zig.zon",
         "src",
+        "dawn",
         // For example...
         //"LICENSE",
         //"README.md",
