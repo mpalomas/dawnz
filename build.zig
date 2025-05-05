@@ -60,7 +60,7 @@ pub fn build(b: *std.Build) !void {
     });
     dawn_lib.addIncludePath(b.path("dawn/include"));
     dawn_lib.linkLibC();
-    dawn_lib.installHeadersDirectory(b.path("dawn/include/dawn"), "dawn", .{});
+    dawn_lib.installHeadersDirectory(b.path("dawn/include/dawn"), "webgpu", .{});
 
     if (shared) {
         dawn_lib.addLibraryPath(b.path(dawn_lib_path));
