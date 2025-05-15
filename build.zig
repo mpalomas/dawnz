@@ -66,8 +66,9 @@ pub fn build(b: *std.Build) !void {
         dawn_lib.addLibraryPath(b.path(dawn_lib_path));
         dawn_lib.linkSystemLibrary("dawn");
         b.addNamedLazyPath("dawn_shared_library", b.path(dawn_path));
+        b.installBinFile(dawn_path, dawn_shared_name);
     } else {}
-    // b.installBinFile(dawn_path, dawn_lib_name);
+
     b.installArtifact(dawn_lib);
 
     // Creates a step for unit testing. This only builds the test executable
